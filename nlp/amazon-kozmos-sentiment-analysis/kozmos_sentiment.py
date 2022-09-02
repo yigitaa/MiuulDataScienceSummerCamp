@@ -24,7 +24,7 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 ##################################################
 # 1. Text Preprocessing
 ##################################################
-df = pd.read_excel("Natural Language Processing/Projects/Amazon_Reviews_Sentimental_Analysis/amazon.xlsx")
+df = pd.read_excel("amazon.xlsx")
 df.head()
 
 ###############################
