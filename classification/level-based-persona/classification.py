@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 500)
-df = pd.read_csv("Project\Kural_Tabanli_Siniflandirma\persona.csv")
+df = pd.read_csv("...\persona.csv")
 df.head()
 df.info
 
