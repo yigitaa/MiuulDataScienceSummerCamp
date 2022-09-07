@@ -57,13 +57,6 @@ def check_outlier(dataframe, col_name):
         return True
     else:
         return False
-
-
-def retail_data_prep(dataframe):
-    return dataframe
-
-
-df = retail_data_prep(df)
 check_df(df)
 
 ################################################
@@ -168,17 +161,6 @@ elbow.elbow_value_
 #################
 # final cluster
 #################
-def load(RFM):
-    RFM = df.groupby("CUSTOMER ID").agg({"INVOICEDATE": lambda x: (last_date - x.max()).days,
-                                         "INVOICE": lambda x: x.nunique(),
-                                         "NEW_TOTAL_PRICE": lambda x: x.sum()})
-
-    RFM.columns = ["RECENCY", "FREQUENCY", "MONETARY"]
-    return RFM
-
-
-load(RFM)
-
 kmeans = KMeans(n_clusters=elbow.elbow_value_, random_state=17).fit(new_df)
 clusters = kmeans.labels_
 
