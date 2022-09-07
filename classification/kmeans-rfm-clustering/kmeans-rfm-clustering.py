@@ -15,7 +15,7 @@ from yellowbrick.cluster import KElbowVisualizer
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-df = pd.read_excel(".../online_retail_II.xlsx")
+df = pd.read_excel("Machine_Learning/machine_learning/Projects/Musteri_Segmentasyon/online_retail_II.xlsx")
 
 
 ################################################
@@ -57,6 +57,7 @@ def check_outlier(dataframe, col_name):
         return True
     else:
         return False
+
 check_df(df)
 
 ################################################
@@ -133,8 +134,9 @@ plt.show()
 # Why scaling?
 # LS_: Log-Scaled
 sc = StandardScaler()
-sc.fit(RFM[["LS_RECENCY", "LS_FREQUENCY", "LS_MONETARY"]])
-scaled_rf = sc.transform(RFM[["LS_RECENCY", "LS_FREQUENCY", "LS_MONETARY"]])
+sc.fit(RFM[["LOG_RECENCY", "LOG_FREQUENCY", "LOG_MONETARY"]])
+scaled_rf = sc.transform(RFM[["LOG_RECENCY", "LOG_FREQUENCY", "LOG_MONETARY"]])
+
 new_df = pd.DataFrame(index=RFM.index, columns=["LS_RECENCY", "LS_FREQUENCY", "LS_MONETARY"], data=scaled_rf)
 # ------------------------------------------------------#
 
@@ -156,7 +158,6 @@ elbow.fit(new_df)
 elbow.show()
 
 elbow.elbow_value_
-
 
 #################
 # final cluster
