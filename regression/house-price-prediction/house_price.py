@@ -458,9 +458,24 @@ all_models = all_models(X_train, y_train, test_size=0.2, random_state=42, classi
 
 ##### Hyperparameter Optimization #####
 
-# At this point we can see lowest RMSE_Test is Ridge. 
-ridge_params = {'alpha':[0.02, 0.024, 0.025, 0.026, 0.03]}
+# At this point we can see lowest RMSE_Test is Ridge. However, this does not mean Ridge is the best model for us.
+# RMSE_Test wise Ridge is the best model but, do we need 1-2% more accurate model for $10k more cost?
 
+ridge_model = Ridge(random_state=42).fit(X_train, y_train)
+ridge_model.get_params()
+ridge_params = {'alpha':[1, 0.5, 0.1, 0.01, 1.5]}
+ridge_best_grid = GridSearchCV(ridge_model, ridge_params, cv=5, n_jobs=-1, verbose=True).fit(X_train, y_train)
+ridge_best_grid.best_params_
+ridge_final_model = ridge_model.set_params(**ridge_best_grid.best_params_).fit(X, y)
+y_train_pred = ridge_final_model.predict(X_train)
+y_test_pred = ridge_final_model.predict(X_test)
+
+np.sqrt(mean_squared_error(y_train, y_train_pred))
+np.sqrt(mean_squared_error(y_test, y_test_pred))
+
+ridge_rmse = np.mean(np.sqrt(-cross_val_score(ridge_final_model, X, y, cv=5, scoring="neg_mean_squared_error")))
+
+np.expm1(ridge_rmse)
 ## GBM ##
 gbm_model = GradientBoostingRegressor(random_state=42).fit(X_train, y_train)
 
@@ -518,10 +533,8 @@ rmse = np.mean(np.sqrt(-cross_val_score(final_model, X, y, cv=5, scoring="neg_me
 rmse_train = np.mean(np.sqrt(-cross_val_score(final_model, X_train, y_train, cv=5, scoring="neg_mean_squared_error")))
 rmse_test = np.mean(np.sqrt(-cross_val_score(final_model, X_test, y_test, cv=5, scoring="neg_mean_squared_error")))
 
-regressors = [("Ridge", Ridge(), ridge_params),
-              ('GBM', GradientBoostingRegressor(), gbm_params)]
 
-
+##### Plot importance for GBM #####
 def plot_importance(model, features, num=len(X), save=False):
     feature_imp = pd.DataFrame({'Value': model.feature_importances_, 'Feature': features.columns})
     plt.figure(figsize=(10, 10))
