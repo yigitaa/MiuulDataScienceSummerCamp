@@ -15,7 +15,7 @@ from yellowbrick.cluster import KElbowVisualizer
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-df = pd.read_excel("Machine_Learning/machine_learning/Projects/Musteri_Segmentasyon/online_retail_II.xlsx")
+df = pd.read_excel(".../online_retail_II.xlsx")
 
 
 ################################################
